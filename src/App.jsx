@@ -165,8 +165,6 @@ export default function App() {
             <h2>No spreadsheet loaded</h2>
             <p>
               Drag and drop an Excel, ODS or CSV file here, or click to browse.
-              <br />
-              Files placed in <code>src/data/</code> load automatically.
             </p>
           </div>
         )}
