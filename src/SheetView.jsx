@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { compareValues, exportXlsx, formatValue } from './loader.js'
+import { compareValues, exportCsv, exportXlsx, formatValue } from './loader.js'
 import { useSheetEdits } from './useSheetEdits.js'
 
 const PAGE_SIZES = [25, 50, 100, 250]
@@ -68,9 +68,10 @@ export default function SheetView({ file, sheet }) {
     setSelectedId(addRow())
   }
 
-  function handleExport() {
-    const base = file.replace(/\.[^.]+$/, '')
-    exportXlsx(`${base}-${sheet.name}-reviewed.xlsx`, sheet.name, columns, rows, notes)
+  function handleExport(format) {
+    const base = `${file.replace(/\.[^.]+$/, '')}-${sheet.name}-reviewed`
+    if (format === 'csv') exportCsv(`${base}.csv`, columns, rows, notes)
+    else exportXlsx(`${base}.xlsx`, sheet.name, columns, rows, notes)
   }
 
   function handleDiscard() {
@@ -180,7 +181,10 @@ export default function SheetView({ file, sheet }) {
             </div>
           )}
         </div>
-        <button className="btn btn-primary" onClick={handleExport}>
+        <button className="btn" onClick={() => handleExport('csv')}>
+          Export CSV
+        </button>
+        <button className="btn btn-primary" onClick={() => handleExport('xlsx')}>
           Export Excel
         </button>
         {hasChanges && (
